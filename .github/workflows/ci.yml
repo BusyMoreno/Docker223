@@ -1,4 +1,4 @@
-name: CI
+name: CI/CD Deployment
 
 on:
   push:
@@ -8,13 +8,23 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v3
+      - name: Build Docker images
+        run: docker-compose build
 
-      - name: Build backend Docker image
-        run: docker build -t docker223-backend ./backend/223_User_Profile_Backend
-
-      - name: Build frontend Docker image
-        run: docker build -t docker223-frontend ./frontend/223_User_Profile_Frontend
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: SSH to server and deploy
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 2222
+          script: |
+            cd ~/Docker223
+            docker-compose pull
+            docker-compose up -d
