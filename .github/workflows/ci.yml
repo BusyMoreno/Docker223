@@ -11,7 +11,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Build Docker images
-        run: docker-compose build
+        run: docker compose build
 
   deploy:
     needs: build
@@ -26,5 +26,5 @@ jobs:
           port: 2222
           script: |
             cd ~/Docker223
-            docker-compose pull
-            docker-compose up -d
+            docker compose pull
+            docker compose up -d
