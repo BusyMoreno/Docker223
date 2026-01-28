@@ -2,7 +2,7 @@ services:
   frontend:
     container_name: frontend
     build:
-      context: ./Docker223Frontend/223_User_Profile_Frontend
+      context: ./frontend/223_User_Profile_Frontend
       dockerfile: Dockerfile
     image: docker223-frontend
     ports:
@@ -13,7 +13,7 @@ services:
   backend:
     container_name: backend
     build:
-      context: ./Docker223Backend/223_User_Profile_Backend
+      context: ./backend/223_User_Profile_Backend
       dockerfile: Dockerfile
     image: docker223-backend
     ports:
@@ -36,4 +36,3 @@ services:
       - "5432:5432"
     volumes:
       - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
-
