@@ -32,3 +32,17 @@ jobs:
             docker compose pull
             docker compose up -d --build
             docker ps
+
+      - name: Notify Discord (success)
+        if: success()
+        uses: Ilshidur/action-discord@master
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+        with:
+          args: |
+            🚀 **Deployment successful!**
+            Repo: **${{ github.repository }}**
+            Branch: **${{ github.ref_name }}**
+            Commit: **${{ github.sha }}**
+            Deployed by: **${{ github.actor }}**
+
